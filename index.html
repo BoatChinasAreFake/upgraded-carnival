@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Authentic Mexican cuisine in a warm, welcoming atmosphere. Visit Casa del Sol for the best tacos, enchiladas, and margaritas in town.">
+    <title>Casa del Sol - Authentic Mexican Restaurant</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header and Navigation -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 class="logo">Casa del Sol</h1>
+                </div>
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero" aria-labelledby="hero-heading">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h2 id="hero-heading">Welcome to Casa del Sol</h2>
+                    <p class="hero-subtitle">Authentic Mexican Flavors in Every Bite</p>
+                    <a href="#menu" class="btn btn-primary">View Our Menu</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section" aria-labelledby="about-heading">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="about-heading">Our Story</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Since 1995, Casa del Sol has been serving authentic Mexican cuisine made with love and tradition. Our recipes have been passed down through generations, bringing the true flavors of Mexico to your table.</p>
+                        <p>We use only the freshest ingredients, traditional cooking methods, and authentic spices to create dishes that transport you straight to the heart of Mexico.</p>
+                        <ul class="features-list">
+                            <li>
+                                <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Fresh, locally-sourced ingredients</span>
+                            </li>
+                            <li>
+                                <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Traditional family recipes</span>
+                            </li>
+                            <li>
+                                <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Warm, family-friendly atmosphere</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="about-image">
+                        <div class="image-placeholder" role="img" aria-label="Traditional Mexican cooking in our kitchen"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="menu-section" aria-labelledby="menu-heading">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="menu-heading">Our Menu</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <!-- Menu Filter Tabs -->
+                <div class="menu-filters" role="tablist" aria-label="Menu categories">
+                    <button class="filter-btn active" role="tab" aria-selected="true" aria-controls="all-items" data-filter="all">All</button>
+                    <button class="filter-btn" role="tab" aria-selected="false" aria-controls="appetizers-items" data-filter="appetizers">Appetizers</button>
+                    <button class="filter-btn" role="tab" aria-selected="false" aria-controls="entrees-items" data-filter="entrees">Entrees</button>
+                    <button class="filter-btn" role="tab" aria-selected="false" aria-controls="desserts-items" data-filter="desserts">Desserts</button>
+                    <button class="filter-btn" role="tab" aria-selected="false" aria-controls="drinks-items" data-filter="drinks">Drinks</button>
+                </div>
+
+                <!-- Menu Items -->
+                <div class="menu-grid" role="tabpanel">
+                    <article class="menu-item" data-category="appetizers">
+                        <div class="menu-item-header">
+                            <h3>Guacamole Fresco</h3>
+                            <span class="price">$8.99</span>
+                        </div>
+                        <p class="menu-item-description">Fresh avocados, cilantro, lime, tomatoes, and onions. Served with warm tortilla chips.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="appetizers">
+                        <div class="menu-item-header">
+                            <h3>Queso Fundido</h3>
+                            <span class="price">$9.99</span>
+                        </div>
+                        <p class="menu-item-description">Melted Oaxaca cheese with chorizo and poblano peppers. Served with flour tortillas.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="appetizers">
+                        <div class="menu-item-header">
+                            <h3>Nachos Supreme</h3>
+                            <span class="price">$11.99</span>
+                        </div>
+                        <p class="menu-item-description">Crispy tortilla chips loaded with cheese, beans, jalapeños, sour cream, and pico de gallo.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="entrees">
+                        <div class="menu-item-header">
+                            <h3>Tacos al Pastor</h3>
+                            <span class="price">$14.99</span>
+                        </div>
+                        <p class="menu-item-description">Three soft corn tortillas with marinated pork, pineapple, cilantro, and onions.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="entrees">
+                        <div class="menu-item-header">
+                            <h3>Enchiladas Rojas</h3>
+                            <span class="price">$15.99</span>
+                        </div>
+                        <p class="menu-item-description">Corn tortillas filled with chicken, topped with red sauce and melted cheese. Served with rice and beans.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="entrees">
+                        <div class="menu-item-header">
+                            <h3>Carne Asada</h3>
+                            <span class="price">$18.99</span>
+                        </div>
+                        <p class="menu-item-description">Grilled skirt steak with grilled onions and peppers. Served with rice, beans, and tortillas.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="entrees">
+                        <div class="menu-item-header">
+                            <h3>Chile Relleno</h3>
+                            <span class="price">$16.99</span>
+                        </div>
+                        <p class="menu-item-description">Roasted poblano pepper stuffed with cheese, battered and fried. Topped with ranchero sauce.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="entrees">
+                        <div class="menu-item-header">
+                            <h3>Mole Poblano</h3>
+                            <span class="price">$17.99</span>
+                        </div>
+                        <p class="menu-item-description">Chicken breast covered in traditional mole sauce. Served with rice and tortillas.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="desserts">
+                        <div class="menu-item-header">
+                            <h3>Churros</h3>
+                            <span class="price">$6.99</span>
+                        </div>
+                        <p class="menu-item-description">Crispy fried dough sticks coated in cinnamon sugar. Served with chocolate dipping sauce.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="desserts">
+                        <div class="menu-item-header">
+                            <h3>Flan</h3>
+                            <span class="price">$7.99</span>
+                        </div>
+                        <p class="menu-item-description">Traditional vanilla custard with caramel sauce.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="desserts">
+                        <div class="menu-item-header">
+                            <h3>Tres Leches Cake</h3>
+                            <span class="price">$8.99</span>
+                        </div>
+                        <p class="menu-item-description">Moist sponge cake soaked in three types of milk, topped with whipped cream.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="drinks">
+                        <div class="menu-item-header">
+                            <h3>Classic Margarita</h3>
+                            <span class="price">$9.99</span>
+                        </div>
+                        <p class="menu-item-description">Tequila, fresh lime juice, and triple sec. Available on the rocks or frozen.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="drinks">
+                        <div class="menu-item-header">
+                            <h3>Horchata</h3>
+                            <span class="price">$4.99</span>
+                        </div>
+                        <p class="menu-item-description">Traditional rice and cinnamon drink, served cold.</p>
+                    </article>
+
+                    <article class="menu-item" data-category="drinks">
+                        <div class="menu-item-header">
+                            <h3>Jamaica</h3>
+                            <span class="price">$4.99</span>
+                        </div>
+                        <p class="menu-item-description">Refreshing hibiscus tea, sweetened and served over ice.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery-section" aria-labelledby="gallery-heading">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="gallery-heading">Photo Gallery</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Tacos al Pastor">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+                            <span class="gallery-label">Tacos al Pastor</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Fresh Guacamole">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                            <span class="gallery-label">Fresh Guacamole</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Restaurant Interior">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <span class="gallery-label">Our Restaurant</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Enchiladas">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                            <span class="gallery-label">Enchiladas</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Margaritas">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                            <span class="gallery-label">Margaritas</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" tabindex="0" role="button" aria-label="View image: Churros">
+                        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                            <span class="gallery-label">Churros</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="contact-heading">Visit Us</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M17.6569 16.6569C16.7202 17.5935 14.7616 19.5521 13.4138 20.8999C12.6327 21.681 11.3677 21.6814 10.5866 20.9003C9.26234 19.576 7.34159 17.6553 6.34315 16.6569C3.21895 13.5327 3.21895 8.46734 6.34315 5.34315C9.46734 2.21895 14.5327 2.21895 17.6569 5.34315C20.781 8.46734 20.781 13.5327 17.6569 16.6569Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 11C15 12.6569 13.6569 14 12 14C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h3>Address</h3>
+                                <p>123 Fiesta Lane<br>Downtown District<br>Your City, ST 12345</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M3 5C3 3.89543 3.89543 3 5 3H8.27924C8.70967 3 9.09181 3.27543 9.22792 3.68377L10.7257 8.17721C10.8831 8.64932 10.6694 9.16531 10.2243 9.38787L7.96701 10.5165C9.06925 12.9612 11.0388 14.9308 13.4835 16.033L14.6121 13.7757C14.8347 13.3306 15.3507 13.1169 15.8228 13.2743L20.3162 14.7721C20.7246 14.9082 21 15.2903 21 15.7208V19C21 20.1046 20.1046 21 19 21H18C9.71573 21 3 14.2843 3 6V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h3>Phone</h3>
+                                <p><a href="tel:+15551234567">(555) 123-4567</a></p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h3>Hours</h3>
+                                <p>Monday - Thursday: 11am - 10pm<br>
+                                Friday - Saturday: 11am - 11pm<br>
+                                Sunday: 12pm - 9pm</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contact-form" aria-label="Reservation form">
+                        <h3>Make a Reservation</h3>
+                        <div class="form-group">
+                            <label for="name">Name <span class="required" aria-label="required">*</span></label>
+                            <input type="text" id="name" name="name" required aria-required="true">
+                            <span class="error-message" role="alert"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email <span class="required" aria-label="required">*</span></label>
+                            <input type="email" id="email" name="email" required aria-required="true">
+                            <span class="error-message" role="alert"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone <span class="required" aria-label="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required aria-required="true">
+                            <span class="error-message" role="alert"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">Date <span class="required" aria-label="required">*</span></label>
+                                <input type="date" id="date" name="date" required aria-required="true">
+                                <span class="error-message" role="alert"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Time <span class="required" aria-label="required">*</span></label>
+                                <input type="time" id="time" name="time" required aria-required="true">
+                                <span class="error-message" role="alert"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Number of Guests <span class="required" aria-label="required">*</span></label>
+                            <select id="guests" name="guests" required aria-required="true">
+                                <option value="">Select...</option>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5 Guests</option>
+                                <option value="6">6+ Guests</option>
+                            </select>
+                            <span class="error-message" role="alert"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Special Requests</label>
+                            <textarea id="message" name="message" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Reservation</button>
+                        <div class="form-success" role="alert" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Casa del Sol</h3>
+                    <p>Serving authentic Mexican cuisine since 1995.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <p>Follow us for daily specials and updates!</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Casa del Sol. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
