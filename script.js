@@ -138,13 +138,14 @@
             // Handle click
             item.addEventListener('click', function() {
                 const label = this.querySelector('.gallery-label').textContent;
+                const element = this;
                 // In a real implementation, this would open a lightbox/modal with proper ARIA attributes
                 // For now, we'll log to console as a placeholder
                 console.log('Gallery item clicked:', label);
                 // Visual feedback
-                this.style.opacity = '0.7';
+                element.style.opacity = '0.7';
                 setTimeout(function() {
-                    item.style.opacity = '1';
+                    element.style.opacity = '1';
                 }, 200);
             });
             
