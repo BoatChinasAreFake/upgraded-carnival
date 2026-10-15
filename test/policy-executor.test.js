@@ -66,3 +66,10 @@ test('outbound packet gate rejects late library writes after stop/resume and out
   e.emergencyStop();await assert.rejects(eating);e.resume(principal(['admin']));
   await new Promise(r=>setTimeout(r,50));b._client.write('use_entity',{target:1});assert.equal(packets.length,0);
 });
+test('1.21.11 copper tools and new melee weapons use conservative combat intervals',()=>{
+  assert.equal(attackCooldown({name:'copper_sword'}),675);
+  assert.equal(attackCooldown({name:'copper_axe'}),1300);
+  assert.equal(attackCooldown({name:'copper_hoe'}),1050);
+  assert.ok(attackCooldown({name:'mace'})>=1000/.6);
+  for(const name of ['wooden_spear','copper_spear','netherite_spear']) assert.ok(attackCooldown({name})>=2000);
+});

@@ -1,6 +1,6 @@
 # Minecraft survival bot + Discord
 
-A Minecraft **Java Edition 1.20.4** (protocol 765) survival client with a deterministic controller, isolated AI planner, policy-controlled action executor, Discord text commands and DAVE-capable bidirectional voice. It never sleeps. This is a bounded initial implementation, not a general-purpose autonomous Minecraft player; see [support and validation](docs/support.md).
+A Minecraft **Java Edition 1.21.11** (protocol 774) survival client with a deterministic controller, isolated AI planner, policy-controlled action executor, Discord text commands and DAVE-capable bidirectional voice. It never sleeps. This is a bounded initial implementation, not a general-purpose autonomous Minecraft player; see [support and validation](docs/support.md).
 
 Requires Node **24.17+**, a permitted Minecraft account/server, and owner-reviewed Discord/server policy. Java 21 is used only for the controlled integration server. Use this environment's existing checkout; cloud tasks are already isolated and do not need a Git worktree.
 
@@ -14,7 +14,9 @@ cp .env.example .env
 npm start
 ```
 
-Never commit `.env`, Microsoft auth caches, recorded audio, or tokens. The bot defaults to Microsoft authentication. `MC_AUTH=offline` is exclusively for explicitly configured controlled offline servers. Give it a dedicated ordinary account; it needs no OP permissions. Minecraft must be exactly 1.20.4. Choose home/area bounds that include the server's actual spawn and safe walking terrain. Spawn outside policy latches the stop.
+Never commit `.env`, Microsoft auth caches, recorded audio, or tokens. The bot defaults to Microsoft authentication. `MC_AUTH=offline` is exclusively for explicitly configured controlled offline servers. Give it a dedicated ordinary account; it needs no OP permissions. Minecraft must be exactly 1.21.11. Choose home/area bounds that include the server's actual spawn and safe walking terrain. Spawn outside policy latches the stop.
+
+Upgrading from 1.20.4: run `npm ci --ignore-scripts` before starting. The pinned `minecraft-data` 3.117.0 supplies the newer `player_loaded` handshake flag that Mineflayer needs; the older dependency could log in while the server ignored early interactions. Re-export schematics from Litematica for **1.21.11** (format **v7/subversion 1**, data version **4671**). Legacy v6/3700 exports are rejected rather than silently converted, and checkpoints are scoped to the Minecraft version. The regression server uses `runtime/test-server-1.21.11/`; the previous test directory/world is preserved. Runtime, planner, parser, and test tooling share `src/version.js` as the target version definition.
 
 Configure guild, text/voice channel IDs, role IDs, construction/mining areas, approved single containers, home, death limits, and autonomy permissions in [policy.example.json](config/policy.example.json). The checked-in example grants no real Discord roles and disables autonomous mining/building/voice recording. A reviewed local `config/policy.json` is required. Policy is loaded once; restart to apply changes. Do not generate policy from conversation or AI responses.
 
@@ -51,7 +53,7 @@ The local file is checked on every 50 ms survival tick. Stop clears movement, ca
 
 ## Controlled integration server
 
-The test runner uses its own **disposable** world in ignored `runtime/test-server/`, binds to **127.0.0.1:25575**, has offline authentication, and uses server console commands exclusively to prepare fixtures. These commands are never runtime bot capabilities. Do not use this server configuration on a public interface.
+The test runner uses its own **disposable** world in ignored `runtime/test-server-1.21.11/`, binds to **127.0.0.1:25575**, has offline authentication, and uses server console commands exclusively to prepare fixtures. These commands are never runtime bot capabilities. Do not use this server configuration on a public interface.
 
 ```sh
 # Only after accepting https://aka.ms/MinecraftEULA:

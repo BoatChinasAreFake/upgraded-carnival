@@ -1,3 +1,4 @@
+import { MINECRAFT } from './version.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
@@ -17,7 +18,7 @@ const policy=new Policy(JSON.parse(fs.readFileSync(policyFile,'utf8')));
 fs.mkdirSync('runtime/auth',{recursive:true,mode:0o700});
 const audit=new Audit('runtime/audit.jsonl'),planner=new Planner();
 const auth=process.env.MC_AUTH ?? 'microsoft';if(!['microsoft','offline'].includes(auth)) throw Error('Unsupported authentication');
-const bot=mineflayer.createBot({host:process.env.MC_HOST ?? '127.0.0.1',port:Number(process.env.MC_PORT ?? 25565),username:process.env.MC_USERNAME ?? 'SurvivalBot',version:'1.20.4',auth,profilesFolder:path.resolve('runtime/auth'),respawn:false});
+const bot=mineflayer.createBot({host:process.env.MC_HOST ?? '127.0.0.1',port:Number(process.env.MC_PORT ?? 25565),username:process.env.MC_USERNAME ?? 'SurvivalBot',version:MINECRAFT.version,auth,profilesFolder:path.resolve('runtime/auth'),respawn:false});
 bot.loadPlugin(pathfinderPackage.pathfinder);
 let executor,survival,discord,started=false;
 const emergency=reason=>executor?.emergencyStop(reason);
@@ -34,7 +35,7 @@ bot.on('spawn',()=>{
   executor=new Executor(bot,policy,audit);survival=new SurvivalController(bot,executor,policy,audit).start();
   const runner=new TaskRunner(bot,executor,policy,audit),builder=new Builder(bot,executor,policy,audit);
   if(!policy.area(bot.entity.position,bot.game.dimension)) executor.emergencyStop('spawn-outside-policy');
-  console.log('Minecraft Java 1.20.4 connected. Survival tick active; type stop or create runtime/STOP for emergency stop.');
+  console.log(`Minecraft Java ${MINECRAFT.version} connected. Survival tick active; type stop or create runtime/STOP for emergency stop.`);
   if(process.env.DISCORD_TOKEN) {
     discord=new DiscordBridge(bot,executor,policy,audit,planner,runner,builder);
     void discord.start(process.env.DISCORD_TOKEN,process.env.DISCORD_APPLICATION_ID).then(()=>console.log('Discord connected; guild commands registered.')).catch(()=>{audit.write('discord-error',{code:'startup'});console.error('Discord unavailable; survival and local emergency stop remain active.');});

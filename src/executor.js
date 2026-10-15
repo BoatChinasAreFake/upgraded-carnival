@@ -20,7 +20,10 @@ export const Action = z.discriminatedUnion('kind',[
 ]);
 export function attackCooldown(item) {
   const name=item?.name ?? '';
-  const speed=name.endsWith('_sword') ? 1.6 : name.endsWith('_axe') ? (/^(wooden|stone)_/.test(name) ? .8 : name.startsWith('iron_') ? .9 : 1) : name.endsWith('_pickaxe') ? 1.2 : name.endsWith('_shovel') ? 1 : name.endsWith('_hoe') ? ({wooden_hoe:1,stone_hoe:2,iron_hoe:3}[name] ?? 4) : name==='trident' ? 1.1 : 4;
+  // Conservative ordinary melee intervals for new equipment; no spear lunge/smash strategy.
+  if(name.endsWith('_spear')) return 2050;
+  if(name==='mace') return Math.ceil(1000/.6)+50;
+  const speed=name.endsWith('_sword') ? 1.6 : name.endsWith('_axe') ? (/^(wooden|stone|copper)_/.test(name) ? .8 : name.startsWith('iron_') ? .9 : 1) : name.endsWith('_pickaxe') ? 1.2 : name.endsWith('_shovel') ? 1 : name.endsWith('_hoe') ? ({wooden_hoe:1,copper_hoe:1,stone_hoe:2,iron_hoe:3}[name] ?? 4) : name==='trident' ? 1.1 : 4;
   return 1000/speed+50;
 }
 import { supportedPlacement,supportedReference } from './placement.js';

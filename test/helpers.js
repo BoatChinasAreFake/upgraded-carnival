@@ -1,3 +1,4 @@
+import { MINECRAFT } from '../src/version.js';
 import { EventEmitter } from 'node:events';
 import mcData from 'minecraft-data';
 import { Vec3 } from 'vec3';
@@ -6,7 +7,7 @@ export const config={guildId:'guild',textChannelIds:['text'],voiceChannelIds:['v
 export const principal=(roles=['op','build','dig'])=>({kind:'discord',guildId:'guild',id:'user',roles,expiresAt:Date.now()+15000});
 export const audit={events:[],write(event,fields){this.events.push({event,...fields});}};
 export function fakeBot() {
-  const bot=new EventEmitter();bot.registry=mcData('1.20.4');bot.game={dimension:'overworld'};bot.health=20;bot.food=20;bot.oxygenLevel=20;bot.entity={position:new Vec3(0,64,0),height:1.8};bot.entities={};bot.time={timeOfDay:6000};bot.inventory={items:()=>[],slots:[]};bot.world={raycast:()=>null};
+  const bot=new EventEmitter();bot.registry=mcData(MINECRAFT.version);bot.game={dimension:'overworld'};bot.health=20;bot.food=20;bot.oxygenLevel=20;bot.entity={position:new Vec3(0,64,0),height:1.8};bot.entities={};bot.time={timeOfDay:6000};bot.inventory={items:()=>[],slots:[]};bot.world={raycast:()=>null};
   bot.blockAt=p=>({name:p.y<64?'stone':'air',boundingBox:p.y<64?'block':'empty',position:p,canHarvest:()=>true,getProperties:()=>({}),digTime:()=>100});
   bot.pathfinder={setMovements:()=>{},setGoal:()=>{},goto:async goal=>{bot.entity.position=new Vec3(goal.x,goal.y,goal.z);}};bot.clearControlStates=()=>{};bot.stopDigging=()=>{};bot.deactivateItem=()=>{};bot.quit=()=>{};bot.equip=async i=>{bot.heldItem=i;};bot.attack=e=>{bot.attacked=e;};bot.lookAt=async()=>{};bot.canDigBlock=()=>true;bot.respawn=()=>{bot.respawned=true;};
   return bot;

@@ -1,3 +1,5 @@
+import { MINECRAFT,TEST_SERVER_DIRECTORY } from '../src/version.js';
+import crypto from 'node:crypto';
 // Privileged commands below are controlled TEST FIXTURES, never bot/runtime capabilities.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -14,8 +16,11 @@ import { Builder } from '../src/schematic/build.js';
 import { loadSchematic } from '../src/schematic/load.js';
 import { Vec3 } from 'vec3';
 import { fixture } from '../test/fixture.js';
-const directory=path.resolve('runtime/test-server');
+const directory=path.resolve(TEST_SERVER_DIRECTORY);
 if(!fs.existsSync(path.join(directory,'server.jar')) || !fs.readFileSync(path.join(directory,'eula.txt'),'utf8').includes('eula=true')) throw Error('Run npm run server:prepare -- --accept-eula after accepting the EULA.');
+const serverManifest=JSON.parse(fs.readFileSync(path.join(directory,'server-manifest.json'),'utf8'));
+assert.equal(serverManifest.minecraftVersion,MINECRAFT.version,'Prepare the exact target server version');
+assert.equal(crypto.createHash('sha1').update(fs.readFileSync(path.join(directory,'server.jar'))).digest('hex'),serverManifest.sha1,'Server jar checksum must match verified download');
 const server=spawn('java',['-Xms512M','-Xmx1024M','-XX:ActiveProcessorCount=2','-jar','server.jar','nogui'],{cwd:directory,stdio:['pipe','pipe','pipe']});
 const log=fs.createWriteStream(path.resolve('runtime/server-test.log'),{flags:'w',mode:0o600});let ready=false,exited=false;
 server.stdout.on('data',b=>{log.write(b);if(b.toString().includes('Done (')) ready=true;});server.stderr.on('data',b=>log.write(b));server.on('exit',()=>exited=true);
@@ -26,17 +31,19 @@ let bot,executor,survival;const audit=new Audit('runtime/server-test-audit.jsonl
 const check=async(name,fn)=>{await fn();results.push(name);console.log('PASS '+name);};
 const principal={kind:'discord',guildId:'test',id:'fixture-operator',roles:['admin'],expiresAt:Date.now()+300000};
 try {
-  console.log('Starting controlled vanilla 1.20.4 server (loopback, 1 GiB heap, 2 CPUs)…');await wait(()=>ready,'server readiness',90000);
-  command('kill @e[type=!player]');command('gamerule doMobSpawning false');command('gamerule doDaylightCycle false');command('time set noon');command('weather clear');
-  command('fill -16 63 -16 16 63 16 stone');command('fill -16 64 -16 16 68 16 air');command('setworldspawn 0 64 0');
-  bot=mineflayer.createBot({host:'127.0.0.1',port:25575,username,version:'1.20.4',auth:'offline',respawn:false});
+  console.log(`Starting controlled vanilla ${MINECRAFT.version} server (loopback, 1 GiB heap, 2 CPUs)…`);await wait(()=>ready,'server readiness',90000);
+  command('kill @e[type=!player]');command('gamerule minecraft:spawn_mobs false');command('gamerule minecraft:advance_time false');command('time set noon');command('weather clear');
+  command('setworldspawn 0 64 0');
+  bot=mineflayer.createBot({host:'127.0.0.1',port:25575,username,version:MINECRAFT.version,auth:'offline',respawn:false});
   bot.on('error',()=>{});bot.loadPlugin(pathfinderPackage.pathfinder);await once(bot,'spawn');
+  await bot.waitForChunksToLoad();
+  command('fill -16 63 -16 16 63 16 stone');command('fill -16 64 -16 16 68 16 air');
   command('tp TestSurvivalBot 0.5 64 0.5');command('spawnpoint TestSurvivalBot 0 64 0');
-  await wait(()=>bot.entity.position.y===64,'fixture teleport');await bot.waitForChunksToLoad();
+  await wait(()=>bot.entity.position.y===64 && bot.blockAt(new Vec3(1,63,1))?.name==='stone' && bot.blockAt(new Vec3(1,64,1))?.name==='air','fixture terrain and teleport');
   const policy=new Policy({guildId:'test',textChannelIds:['test'],voiceChannelIds:[],roles:{operator:[],builder:[],destroyer:[],admin:['admin']},areas:[{id:'test',dimension:'overworld',bounds:{min:{x:-16,y:63,z:-16},max:{x:16,y:70,z:16}},mine:true,build:true}],containers:[{dimension:'overworld',position:{x:4,y:64,z:0}},{dimension:'overworld',position:{x:2,y:64,z:0}}],home:{x:0,y:64,z:0},maxDeaths:3,maxRecoveryDistance:16,allowAutonomousMining:false,allowAutonomousBuilding:false,allowVoiceRecording:false});
   executor=new Executor(bot,policy,audit);
   if(process.env.TEST_DEBUG==='1') executor.on('actionError',({action,error})=>console.log('TEST DEBUG',action.kind,action.position,error.message));
-  await check('protocol 765 / Java 1.20.4 survival login',async()=>{assert.equal(bot.version,'1.20.4');assert.equal(bot.game.gameMode,'survival');assert.equal(bot.registry.version.version,765);});
+  await check(`protocol ${MINECRAFT.protocolVersion} / Java ${MINECRAFT.version} survival login`,async()=>{assert.equal(bot.version,MINECRAFT.version);assert.equal(bot.game.gameMode,'survival');assert.equal(bot.registry.version.version,MINECRAFT.protocolVersion);});
   command('give TestSurvivalBot iron_pickaxe');command('give TestSurvivalBot stone_sword');command('give TestSurvivalBot cobblestone 64');command('give TestSurvivalBot glass 8');command('give TestSurvivalBot cooked_beef 8');command('give TestSurvivalBot iron_chestplate');
   await wait(()=>bot.inventory.items().some(i=>i.name==='iron_chestplate'),'inventory fixture');
   await check('ordinary pathfinder movement with no break/place',async()=>{await executor.submit({kind:'move',position:{x:1,y:64,z:1}},principal);assert.ok(bot.entity.position.distanceTo(new Vec3(1,64,1))<1.5);});
@@ -129,17 +136,18 @@ try {
   await check('actual main entrypoint starts survival and accepts independent console stop',async()=>{
     bot.quit('Fixture client finished');
     const file=path.resolve('runtime/main-smoke-policy.json');fs.writeFileSync(file,JSON.stringify(policy.config),{mode:0o600});
+    const auditOffset=fs.existsSync('runtime/audit.jsonl')?fs.statSync('runtime/audit.jsonl').size:0;
     const main=spawn(process.execPath,['--use-env-proxy','src/main.js'],{cwd:path.resolve('.'),stdio:['pipe','pipe','pipe'],env:{...process.env,MC_HOST:'127.0.0.1',MC_PORT:'25575',MC_USERNAME:'Smoke'+Date.now().toString(36),MC_AUTH:'offline',POLICY_FILE:file,DISCORD_TOKEN:'',DISCORD_APPLICATION_ID:'',AI_API_KEY:''}});
     let output='',ended=false;main.stdout.on('data',b=>output+=b.toString());main.stderr.resume();main.on('exit',()=>ended=true);
     try {
-      await wait(()=>{if(ended) throw Error('Main entrypoint exited before readiness');return output.includes('Survival tick active') && output.includes('Discord disabled');},'main entrypoint readiness');
-      main.stdin.write('stop\n');await wait(()=>fs.readFileSync('runtime/audit.jsonl','utf8').includes('"reason":"console"'),'main console stop');
+      await wait(()=>{if(ended) throw Error('Main entrypoint exited before readiness');return output.includes(`Minecraft Java ${MINECRAFT.version} connected. Survival tick active`) && output.includes('Discord disabled');},'main entrypoint readiness');
+      main.stdin.write('stop\n');await wait(()=>fs.readFileSync('runtime/audit.jsonl').subarray(auditOffset).toString('utf8').includes('"reason":"console"'),'main console stop');
     } finally {main.kill('SIGTERM');await Promise.race([once(main,'exit'),new Promise(resolve=>setTimeout(()=>{main.kill('SIGKILL');resolve();},5000).unref())]);}
   });
-  fs.writeFileSync('runtime/server-test-results.json',JSON.stringify({version:'1.20.4',protocol:765,time:new Date().toISOString(),passed:results,failed:[],survivalTickMaxMs:Math.max(...survival.latencies)},null,2));
+  fs.writeFileSync('runtime/server-test-results.json',JSON.stringify({version:MINECRAFT.version,protocol:MINECRAFT.protocolVersion,dataVersion:MINECRAFT.dataVersion,time:new Date().toISOString(),passed:results,failed:[],survivalTickMaxMs:Math.max(...survival.latencies)},null,2));
   console.log(`Controlled server checks passed: ${results.length}`);
 } catch(error) {
-  fs.writeFileSync('runtime/server-test-results.json',JSON.stringify({version:'1.20.4',time:new Date().toISOString(),passed:results,failed:[error.message]},null,2));console.error(error);process.exitCode=1;
+  fs.writeFileSync('runtime/server-test-results.json',JSON.stringify({version:MINECRAFT.version,time:new Date().toISOString(),passed:results,failed:[error.message]},null,2));console.error(error);process.exitCode=1;
 } finally {
   survival?.stop();executor?.emergencyStop('test-finished');bot?.quit('Test complete');audit.close();
   command('stop');await Promise.race([once(server,'exit'),new Promise(resolve=>setTimeout(()=>{server.kill('SIGKILL');resolve();},10000).unref())]);log.end();

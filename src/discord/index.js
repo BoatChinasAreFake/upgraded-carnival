@@ -1,3 +1,4 @@
+import { MINECRAFT } from '../version.js';
 import { Client,GatewayIntentBits,REST,Routes,SlashCommandBuilder } from 'discord.js';
 import { VoiceBridge } from './voice.js';
 import { loadSchematic } from '../schematic/load.js';
@@ -11,7 +12,7 @@ export function commandDefinitions() {
     coordinates(new SlashCommandBuilder().setName('mine').setDescription('Mine one visible authorized block')),
     new SlashCommandBuilder().setName('craft').setDescription('Craft an inventory recipe').addStringOption(o=>o.setName('item').setDescription('Minecraft item name').setRequired(true)).addIntegerOption(o=>o.setName('count').setDescription('Recipe repetitions, 1–4').setMinValue(1).setMaxValue(4)),
     new SlashCommandBuilder().setName('voice').setDescription('Join or leave your allowed voice channel').addStringOption(o=>o.setName('mode').setDescription('Mode').setChoices({name:'join',value:'join'},{name:'leave',value:'leave'}).setRequired(true)),
-    new SlashCommandBuilder().setName('schematic').setDescription('Validate a .litematic and list materials').addAttachmentOption(o=>o.setName('file').setDescription('Java 1.20.4 .litematic, max 2 MiB').setRequired(true)),
+    new SlashCommandBuilder().setName('schematic').setDescription('Validate a .litematic and list materials').addAttachmentOption(o=>o.setName('file').setDescription(`Java ${MINECRAFT.version} .litematic, max 2 MiB`).setRequired(true)),
     coordinates(new SlashCommandBuilder().setName('materials').setDescription('Plan materials including supports for a loaded schematic').addStringOption(o=>o.setName('id').setDescription('Schematic SHA-256').setRequired(true))),
     coordinates(new SlashCommandBuilder().setName('build').setDescription('Build a validated schematic with checkpoints').addStringOption(o=>o.setName('id').setDescription('Schematic SHA-256').setRequired(true)))
   ].map(c=>c.setDMPermission(false).toJSON());

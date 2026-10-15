@@ -1,3 +1,4 @@
+import { MINECRAFT } from '../version.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -43,6 +44,7 @@ export class Builder {
   cancel() {this.cancelled=true;}
   plan(schematic,origin,principal) {
     this.policy.authorizeTask(principal,{kind:'build',position:origin});
+    if(schematic.dataVersion!==MINECRAFT.dataVersion || schematic.format!==MINECRAFT.litematicVersion) throw Error('Schematic version does not match the Minecraft client');
     if(schematic.blocks.length>Math.min(512,this.policy.config.maxTaskActions)) throw Error('Build exceeds bounded visible-site action budget');
     const plan=constructionPlan(schematic,origin,p=>visibleBlock(this.bot,p,6));
     for(const b of plan.ordered) {
@@ -56,13 +58,13 @@ export class Builder {
     fs.writeFileSync(file+'.tmp',JSON.stringify(data,null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);
   }
   async run(schematic,origin,principal,refresh=async()=>principal) {
-    this.cancelled=false;const plan=this.plan(schematic,origin,principal),id=crypto.createHash('sha256').update(schematic.sha256+JSON.stringify(origin)+this.bot.game.dimension).digest('hex');
+    this.cancelled=false;const plan=this.plan(schematic,origin,principal),id=crypto.createHash('sha256').update(MINECRAFT.version+schematic.sha256+JSON.stringify(origin)+this.bot.game.dimension).digest('hex');
     if(plan.ordered.length>this.policy.config.maxTaskActions) throw Error('Build exceeds action budget');
     for(const [name,n] of Object.entries(plan.materials)) if(this.bot.inventory.items().filter(i=>i.name===name).reduce((s,i)=>s+i.count,0)<n) throw Error(`Missing material ${name}: ${n}`);
     const previousFile=path.join(this.directory,id+'.json');
     const previous=fs.existsSync(previousFile)?JSON.parse(fs.readFileSync(previousFile,'utf8')):null;
     const supports=[...new Map([...(previous?.supports??[]),...plan.supports].map(p=>[key(p),p])).values()];
-    const state={id,schematic:schematic.sha256,origin,dimension:this.bot.game.dimension,completed:[],supports,status:'running'};
+    const state={id,minecraftVersion:MINECRAFT.version,dataVersion:MINECRAFT.dataVersion,schematic:schematic.sha256,origin,dimension:this.bot.game.dimension,completed:[],supports,status:'running'};
     this.checkpoint(id,state);
     try {
       for(const b of plan.ordered) {

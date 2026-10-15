@@ -1,3 +1,4 @@
+import { MINECRAFT } from '../version.js';
 // Pure bounded parser in a permission-restricted subprocess. No eval, imports from input, files or network APIs.
 import { gunzipSync } from 'node:zlib';
 import { supportedPlacement } from '../placement.js';
@@ -32,7 +33,7 @@ export function parseLitematic(input) {
   }
   if(u8()!==10) throw Error('Root must be compound');string();const root=payload(10);
   if(offset!==data.length) throw Error('Trailing data');
-  if(root.Version!==6 || (root.SubVersion ?? 1)!==1 || root.MinecraftDataVersion!==3700) throw Error('Requires litematic v6/subversion1 for Java 1.20.4 data version 3700');
+  if(root.Version!==MINECRAFT.litematicVersion || root.SubVersion!==MINECRAFT.litematicSubVersion || root.MinecraftDataVersion!==MINECRAFT.dataVersion) throw Error(`Requires litematic v${MINECRAFT.litematicVersion}/subversion${MINECRAFT.litematicSubVersion} for Java ${MINECRAFT.version} data version ${MINECRAFT.dataVersion}`);
   if(!root.Regions || typeof root.Regions!=='object' || Array.isArray(root.Regions)) throw Error('Missing regions');
   const regions=Object.values(root.Regions);if(!regions.length || regions.length>16) throw Error('Region limit');
   const blocks=[],occupied=new Map(),materials=Object.create(null);let volume=0;
@@ -64,7 +65,7 @@ export function parseLitematic(input) {
     }
   }
   if(!blocks.length) throw Error('Empty schematic');
-  return {format:6,dataVersion:3700,volume,blocks,materials};
+  return {format:root.Version,dataVersion:root.MinecraftDataVersion,volume,blocks,materials};
 }
 if(process.argv.includes('--parse')) {
   let size=0;const chunks=[];

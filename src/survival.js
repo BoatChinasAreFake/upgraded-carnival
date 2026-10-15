@@ -65,7 +65,7 @@ export class SurvivalController {
       if(this.pending || this.executor.current || Date.now()<this.nextScan) return;
       this.nextScan=Date.now()+750;
       for(const [suffix,destination] of [['helmet','head'],['chestplate','torso'],['leggings','legs'],['boots','feet']]) {
-        const score=name=>name.startsWith('netherite')?6:name.startsWith('diamond')?5:name.startsWith('iron')?4:name.startsWith('chainmail')?3:name.startsWith('golden')?2:1;
+        const score=name=>name.startsWith('netherite')?6:name.startsWith('diamond')?5:name.startsWith('iron')?4:name.startsWith('chainmail')?3:name.startsWith('golden')?2:name.startsWith('copper')?1.5:1;
         const item=b.inventory.items().filter(i=>i.name.endsWith('_'+suffix)).sort((a,c)=>score(c.name)-score(a.name))[0];
         const slot={head:5,torso:6,legs:7,feet:8}[destination],worn=b.inventory.slots[slot];
         if(item && (!worn || score(item.name)>score(worn.name))) {this.act({kind:'equip',name:item.name,destination},30);return;}
