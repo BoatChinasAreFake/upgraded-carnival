@@ -1,0 +1,10 @@
+{
+  "guildId": "REPLACE_GUILD_ID",
+  "textChannelIds": ["REPLACE_TEXT_CHANNEL_ID"], "voiceChannelIds": ["REPLACE_VOICE_CHANNEL_ID"],
+  "roles": { "operator": ["REPLACE_OPERATOR_ROLE"], "builder": ["REPLACE_BUILDER_ROLE"], "destroyer": ["REPLACE_DESTROYER_ROLE"], "admin": ["REPLACE_ADMIN_ROLE"] },
+  "areas": [{"id":"home", "dimension":"overworld", "bounds":{"min":{"x":-32,"y":-64,"z":-32},"max":{"x":32,"y":319,"z":32}}, "build":true,"mine":false}],
+  "containers": [], "home":{"x":0,"y":64,"z":0}, "dimension":"overworld",
+  "maxDeaths":3, "maxRecoveryDistance":32, "maxTaskActions":500,
+  "allowAutonomousMining":false, "allowAutonomousBuilding":false,
+  "allowVoiceRecording":false, "allowPlayerCombat":false
+}

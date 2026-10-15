@@ -1,0 +1,34 @@
+{
+  "version": "1.20.4",
+  "protocol": 765,
+  "time": "2026-10-08T20:54:22.288Z",
+  "passed": [
+    "protocol 765 / Java 1.20.4 survival login",
+    "ordinary pathfinder movement with no break/place",
+    "visible authorized mining and inventory harvest",
+    "unauthorized destructive action denied",
+    "occluded block mining denied",
+    "legitimate placement and server verification",
+    "allowlisted container deposit/withdraw",
+    "sandbox litematic, support placement, verification, checkpoint and repeat",
+    "ordinary inventory crafting uses server recipe and materials",
+    "interrupted schematic build resumes from reverified world state",
+    "allowlisted crafting table produces food with ordinary recipes",
+    "survival equips available armor",
+    "survival consumes food at normal use duration",
+    "defensive combat cooldown under stalled AI and Discord",
+    "creeper threat causes bounded retreat along normal walkable terrain",
+    "autonomous roof and walls are built without sleeping",
+    "independent local emergency stop rejects actions until admin resume",
+    "bounded death recovery respawns then latches at configured death budget",
+    "actual main entrypoint starts survival and accepts independent console stop"
+  ],
+  "failed": [],
+  "survivalTickMaxMs": 1.6767210000034538,
+  "environment": {
+    "node": "24.19.0",
+    "java": "21.0.12.1",
+    "server": "Mojang vanilla 1.20.4, loopback, offline fixture account",
+    "scope": "Controlled flat test world with fixture supplies, not production deployment"
+  }
+}
